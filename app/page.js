@@ -124,19 +124,19 @@ fetch('http://localhost:8080/graphql', {
     setFilteredSuggestions(filtered);
   };
 ///////////////////////
-
-const handleSearch = () => {
-  useEffect(() => {
-    const type = localStorage?.getItem('type');
-    setInputValue('');
+useEffect(() => {
+  const handleSearch = () => {
+    const type = localStorage?.getItem('type')
+    setInputValue('')
     setPrio(0);
-    // Show the conditional div
+     // Show the conditional div
     const graphqlQuery = {
       query: `
         query {
           musicPlayer(
             songTitle: "${inputValue}"
             currentType: "${type}"
+        
           ){
             filePath
             type
@@ -148,7 +148,7 @@ const handleSearch = () => {
         }
       `
     };
-
+  
     fetch('http://localhost:8080/graphql', {
       method: 'POST',
       headers: {
@@ -160,37 +160,38 @@ const handleSearch = () => {
         return res.json();
       })
       .then(resData => {
+        
+        
         if (resData.errors && resData.errors[0].status === 424) {
-          alert('failed 1');
+          alert('failed 1')
           throw new Error("Fetching music data failed!");
         }
         if (resData.errors) {
-          console.log(resData.errors);
-          alert('failed 2');
+          console.log(resData.errors)
+          alert('failed 2')
           setShowDiv(false);
-          setError(resData.errors[0].message);
-          setIsErrorModalOpen(true);
-        } else {
-          console.log("similar songs data " + resData);
-          setPrio(1);
-          setFilePath(resData.data.musicPlayer.filePath);
-          setArtist(resData.data.musicPlayer.artist);
-          setTitle(resData.data.musicPlayer.title);
-          console.log(resData.data.musicPlayer.similarSongs);
-          setSimilarSongs(resData.data.musicPlayer.similarSongs);
-          setImagePath(resData.data.musicPlayer.image);
-          localStorage?.setItem('type', resData.data.musicPlayer.type);
-          setShowDiv(true);
-        }
+          setError(resData.errors[0].message)
+          setIsErrorModalOpen(true)
+        }else{
+        console.log("similar songs data "  +resData)
+        setPrio(1);
+        setFilePath(resData.data.musicPlayer.filePath)
+        setArtist(resData.data.musicPlayer.artist)
+        setTitle(resData.data.musicPlayer.title)
+        console.log(resData.data.musicPlayer.similarSongs);
+        setSimilarSongs(resData.data.musicPlayer.similarSongs)
+        setImagePath(resData.data.musicPlayer.image)
+        localStorage?.setItem('type' , resData.data.musicPlayer.type)
+        setShowDiv(true);
+      }
       })
       .catch(error => {
         setShowDiv(false);
-        console.error("error at searching " + error);
+        console.error("errro at searching "+error);
         // setError('User creation failed');
       });
-  }, [inputValue]);
-};
-
+  };
+})
 
 
 const handlePlay = (event) =>{
