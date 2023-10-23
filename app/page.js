@@ -95,7 +95,6 @@ fetch('http://localhost:8080/graphql', {
 });
 
  useEffect(() => {
-      // Check if localStorage token is available
       const token = localStorage?.getItem('token');
     
       if (!token) {
