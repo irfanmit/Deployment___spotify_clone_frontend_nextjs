@@ -37,7 +37,6 @@ const [error, setError] = useState('');
 const [imagePath, setImagePath] = useState('');
 const [serverConnectionError, setServerConnectionError] = useState('');
 const [serverStatusOnline, setServerStatusOnline] = useState(true)
-  const token = localStorage?.getItem('token')
 
   useEffect(() => {
     const serverUrl = 'http://localhost:8080';
@@ -58,6 +57,7 @@ const [serverStatusOnline, setServerStatusOnline] = useState(true)
   }, []);
 
   useEffect(()=>{
+    const token = localStorage?.getItem('token')
     if(!token)
     setIsModalOpen(true)
   },[token])
@@ -118,72 +118,75 @@ fetch('http://localhost:8080/graphql', {
     setFilteredSuggestions(filtered);
   };
 ///////////////////////
-const handleSearch = () => {
-  const type = localStorage?.getItem('type')
-  setInputValue('')
-  setPrio(0);
-   // Show the conditional div
-  const graphqlQuery = {
-    query: `
-      query {
-        musicPlayer(
-          songTitle: "${inputValue}"
-          currentType: "${type}"
-      
-        ){
-          filePath
-          type
-          artist
-          title
-          similarSongs
-          image
+useEffect(() => {
+  const handleSearch = () => {
+    const type = localStorage?.getItem('type')
+    setInputValue('')
+    setPrio(0);
+     // Show the conditional div
+    const graphqlQuery = {
+      query: `
+        query {
+          musicPlayer(
+            songTitle: "${inputValue}"
+            currentType: "${type}"
+        
+          ){
+            filePath
+            type
+            artist
+            title
+            similarSongs
+            image
+          }
         }
-      }
-    `
-  };
-
-  fetch('http://localhost:8080/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(graphqlQuery)
-  })
-    .then(res => {
-      return res.json();
+      `
+    };
+  
+    fetch('http://localhost:8080/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(graphqlQuery)
     })
-    .then(resData => {
-      
-      
-      if (resData.errors && resData.errors[0].status === 424) {
-        alert('failed 1')
-        throw new Error("Fetching music data failed!");
+      .then(res => {
+        return res.json();
+      })
+      .then(resData => {
+        
+        
+        if (resData.errors && resData.errors[0].status === 424) {
+          alert('failed 1')
+          throw new Error("Fetching music data failed!");
+        }
+        if (resData.errors) {
+          console.log(resData.errors)
+          alert('failed 2')
+          setShowDiv(false);
+          setError(resData.errors[0].message)
+          setIsErrorModalOpen(true)
+        }else{
+        console.log("similar songs data "  +resData)
+        setPrio(1);
+        setFilePath(resData.data.musicPlayer.filePath)
+        setArtist(resData.data.musicPlayer.artist)
+        setTitle(resData.data.musicPlayer.title)
+        console.log(resData.data.musicPlayer.similarSongs);
+        setSimilarSongs(resData.data.musicPlayer.similarSongs)
+        setImagePath(resData.data.musicPlayer.image)
+        localStorage?.setItem('type' , resData.data.musicPlayer.type)
+        setShowDiv(true);
       }
-      if (resData.errors) {
-        console.log(resData.errors)
-        alert('failed 2')
+      })
+      .catch(error => {
         setShowDiv(false);
-        setError(resData.errors[0].message)
-        setIsErrorModalOpen(true)
-      }else{
-      console.log("similar songs data "  +resData)
-      setPrio(1);
-      setFilePath(resData.data.musicPlayer.filePath)
-      setArtist(resData.data.musicPlayer.artist)
-      setTitle(resData.data.musicPlayer.title)
-      console.log(resData.data.musicPlayer.similarSongs);
-      setSimilarSongs(resData.data.musicPlayer.similarSongs)
-      setImagePath(resData.data.musicPlayer.image)
-      localStorage?.setItem('type' , resData.data.musicPlayer.type)
-      setShowDiv(true);
-    }
-    })
-    .catch(error => {
-      setShowDiv(false);
-      console.error("errro at searching "+error);
-      // setError('User creation failed');
-    });
-};
+        console.error("errro at searching "+error);
+        // setError('User creation failed');
+      });
+  };
+})
+
 
 const handlePlay = (event) =>{
   event.preventDefault();
