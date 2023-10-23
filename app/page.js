@@ -124,7 +124,6 @@ fetch('http://localhost:8080/graphql', {
     setFilteredSuggestions(filtered);
   };
 ///////////////////////
-useEffect(() => {
   const handleSearch = () => {
     const type = localStorage?.getItem('type')
     setInputValue('')
@@ -191,7 +190,7 @@ useEffect(() => {
         // setError('User creation failed');
       });
   };
-})
+
 
 
 const handlePlay = (event) =>{
