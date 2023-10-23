@@ -39,23 +39,23 @@ const [serverConnectionError, setServerConnectionError] = useState('');
 const [serverStatusOnline, setServerStatusOnline] = useState(true)
 const [token, setToken] = useState('');
 
-  // useEffect(() => {
-  //   const serverUrl = 'http://localhost:8080';
+  useEffect(() => {
+    const serverUrl = 'http://localhost:8080';
 
-  //   fetch(serverUrl)
-  //     .then((response) => {
-  //       console.log("response" + response)
-  //       if (!response.ok) {
+    fetch(serverUrl)
+      .then((response) => {
+        console.log("response" + response)
+        if (!response.ok) {
           
-  //         setServerConnectionError(
-  //           setServerStatusOnline(false)
-  //         );
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setServerStatusOnline(false)
-  //     });
-  // }, []);
+          setServerConnectionError(
+            setServerStatusOnline(false)
+          );
+        }
+      })
+      .catch((error) => {
+        setServerStatusOnline(false)
+      });
+  }, []);
   useEffect(() => {
     const storedToken = localStorage?.getItem('token');
     if (storedToken) {
