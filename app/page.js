@@ -37,7 +37,7 @@ const [error, setError] = useState('');
 const [imagePath, setImagePath] = useState('');
 const [serverConnectionError, setServerConnectionError] = useState('');
 const [serverStatusOnline, setServerStatusOnline] = useState(true)
-  const token = localStorage.getItem('token')
+  const token = localStorage?.getItem('token')
 
   useEffect(() => {
     const serverUrl = 'http://localhost:8080';
@@ -96,7 +96,7 @@ fetch('http://localhost:8080/graphql', {
 
  useEffect(() => {
       // Check if localStorage token is available
-      const token = localStorage.getItem('token');
+      const token = localStorage?.getItem('token');
     
       if (!token) {
         setTimer(setTimeout(() => {
@@ -120,7 +120,7 @@ fetch('http://localhost:8080/graphql', {
   };
 ///////////////////////
 const handleSearch = () => {
-  const type = localStorage.getItem('type')
+  const type = localStorage?.getItem('type')
   setInputValue('')
   setPrio(0);
    // Show the conditional div
@@ -175,7 +175,7 @@ const handleSearch = () => {
       console.log(resData.data.musicPlayer.similarSongs);
       setSimilarSongs(resData.data.musicPlayer.similarSongs)
       setImagePath(resData.data.musicPlayer.image)
-      localStorage.setItem('type' , resData.data.musicPlayer.type)
+      localStorage?.setItem('type' , resData.data.musicPlayer.type)
       setShowDiv(true);
     }
     })
@@ -246,7 +246,7 @@ const handlePlay = (event) =>{
           {isAuthenticated ? (
       <Link href="/Profile"> {/* Replace "/profile" with your actual profile page URL */}
         <div className="profile">
-          {localStorage.getItem('email') && localStorage.getItem('email')[0].toUpperCase()}
+          {localStorage?.getItem('email') && localStorage?.getItem('email')[0].toUpperCase()}
         </div>
       </Link>
     ) : null}

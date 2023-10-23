@@ -32,7 +32,7 @@ const Similar = ({ similarSongs, setArtist, setTitle, setFilePath, setPrio}) => 
     
     
 
-    const type = localStorage.getItem('type');
+    const type = localStorage?.getItem('type');
     const formattedSongTitle = getTitleFromPath(songPath);
     
     const graphqlQuery = {

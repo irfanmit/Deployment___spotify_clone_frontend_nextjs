@@ -161,7 +161,7 @@ const handleFav = () => {
 
   const handlePrev = () => {
     setPrio(0);
-    const type = localStorage.getItem('type')
+    const type = localStorage?.getItem('type')
     const graphqlQuery = {
         query: `
           query {
@@ -198,7 +198,7 @@ const handleFav = () => {
           setPrio(3);
           console.log(" PREV FILE PATH ==== === === === === "+resData.data.prevMusicPlayer.filePath)
           setPrevFilePath(resData.data.prevMusicPlayer.filePath)
-          localStorage.setItem('type', resData.data.prevMusicPlayer.type);
+          localStorage?.setItem('type', resData.data.prevMusicPlayer.type);
           setTitle(resData.data.nextMusicPlayer.title)
           setArtist(resData.data.nextMusicPlayer.artist)
           
@@ -214,7 +214,7 @@ const handleFav = () => {
 
   const handleNext = () => {
     setPrio(0);
-    const type = localStorage.getItem('type')
+    const type = localStorage?.getItem('type')
     const graphqlQuery = {
         query: `
           query {
@@ -253,7 +253,7 @@ const handleFav = () => {
           setNextFilePath(resData.data.nextMusicPlayer.filePath)
           setTitle(resData.data.nextMusicPlayer.title)
           setArtist(resData.data.nextMusicPlayer.artist)
-          localStorage.setItem('type', resData.data.nextMusicPlayer.type);
+          localStorage?.setItem('type', resData.data.nextMusicPlayer.type);
           
     setIsLiked(!liked)
         //   alert('Successfull.........next.......fetched music data');
@@ -296,7 +296,7 @@ const handleFav = () => {
     
     
 
-    const type = localStorage.getItem('type');
+    const type = localStorage?.getItem('type');
     const formattedSongTitle = getTitleFromPath(songPath);
     
     const graphqlQuery = {

@@ -18,11 +18,11 @@ const Signup = () => {
   const [id, setId] = useState('')
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [emailError, setEmailError] = useState('')
-  const local = localStorage.getItem('email')
+  // const local = localStorage.getItem('email')
   useEffect (()=>{
-    if(local)
+    if(localStorage?.getItem('email'))
     Router.push('/signin')
-  },[local])
+  },[localStorage?.getItem('email')])
 
 
   const handleSubmit = (e) => {
@@ -82,8 +82,8 @@ const Signup = () => {
         }
         console.log(resData);
       setId(resData.data.createUser);
-      localStorage.setItem('Name' , resData.data.createUser.name)
-      localStorage.setItem('email', resData.data.createUser.email)
+      localStorage?.setItem('Name' , resData.data.createUser.name)
+      localStorage?.setItem('email', resData.data.createUser.email)
       // alert('Successfully signed up');
     }).catch(error => {
       // console.log(resData.errors[0].data[0].message);

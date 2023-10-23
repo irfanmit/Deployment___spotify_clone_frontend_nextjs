@@ -4,16 +4,24 @@ import axios from 'axios';
 import styles from './page.module.css';
 import { FaCheckSquare } from 'react-icons/fa';
 import { FaCamera } from 'react-icons/fa';
+
 export default function App() {
   const [file, setFile] = useState();
   const [description, setDescription] = useState("");
-  const [imageURL, setImageURL] = useState();
-  const userEmail = localStorage.getItem('email');
+  const [imageURL, setImageURL] = useState("");
+  const [userEmail, setUserEmail] = useState("");
 
-  const submit = async event => {
+  useEffect(() => {
+    // Get user email from localStorage here
+    const email = localStorage.getItem('email');
+    if (email) {
+      setUserEmail(email);
+    }
+  }, []);
+
+  const submit = async (event) => {
     event.preventDefault();
-    // alert('submitted');
-    
+
     const formData = new FormData();
     formData.append("image", file);
     formData.append("description", description);
@@ -21,7 +29,7 @@ export default function App() {
 
     try {
       const response = await axios.post('http://localhost:8080/Profile', formData, {
-        headers: {'Content-Type': 'multipart/form-data'}
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
       setImageURL(`http://localhost:8080/images/` + response.data.imageName);
       console.log(response.data.imageName + " = =image name ");
@@ -33,48 +41,49 @@ export default function App() {
 
   useEffect(() => {
     const fetchImageURL = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/Profile/${userEmail}`);
-        setImageURL(`http://localhost:8080/images/${response.data.imageName}`);
-      } catch (error) {
-        console.error('Error fetching image URL:', error);
+      if (userEmail) {
+        try {
+          const response = await axios.get(`http://localhost:8080/Profile/${userEmail}`);
+          setImageURL(`http://localhost:8080/images/${response.data.imageName}`);
+        } catch (error) {
+          console.error('Error fetching image URL:', error);
+        }
       }
     };
 
     fetchImageURL();
   }, [userEmail]);
-  
+
   return (
     <>
       <div className={styles.profileCont}>
         <div className={styles.upData}>
           <div className={styles.imageDiv}>
             <img src={imageURL} alt="Uploaded" />
-    <div className={styles.formDiv} >
-
-            <form onSubmit={submit}>
-              <label htmlFor="fileInput" className={styles.customFileInput}>
-              <FaCamera />
-              </label>
-              <input
-                className={styles.fileInput}
-                id="fileInput"
-                filename={file}
-                onChange={e => setFile(e.target.files[0])}
-                type="file"
-                accept="image/*"
-              />
-              {/* <input
-                onChange={e => setDescription(e.target.value)} 
-                type="text"
-              ></input> */}
-              <button type="submit">Upload</button>
-            </form>
-    </div>
+            <div className={styles.formDiv}>
+              <form onSubmit={submit}>
+                <label htmlFor="fileInput" className={styles.customFileInput}>
+                  <FaCamera />
+                </label>
+                <input
+                  className={styles.fileInput}
+                  id="fileInput"
+                  filename={file}
+                  onChange={(e) => setFile(e.target.files[0])}
+                  type="file"
+                  accept="image/*"
+                />
+                {/* <input
+                  onChange={e => setDescription(e.target.value)} 
+                  type="text"
+                ></input> */}
+                <button type="submit">Upload</button>
+              </form>
+            </div>
           </div>
           <div className={styles.profiledata}>
-            <h4>Name: {localStorage.getItem('email')}</h4>
-            <h4>Email: {localStorage.getItem('email')}</h4>
+            <h4>Name: {userEmail}</h4>
+            <h4>Email: {userEmail}</h4>
             <h4>Country: India</h4>
             <h4>City: Patna</h4>
           </div>
@@ -95,17 +104,15 @@ export default function App() {
               {/* Add more items here */}
             </ul>
           </div>
-          
-          <div className={styles.lovesToListen}>
-  <h3>What I Love to Listen</h3>
-  <ul>
-    <li>Some favorite song</li>
-    <li>Another favorite song</li>
-    {/* Add more items here */}
-  </ul>
-</div>
 
-          
+          <div className={styles.lovesToListen}>
+            <h3>What I Love to Listen</h3>
+            <ul>
+              <li>Some favorite song</li>
+              <li>Another favorite song</li>
+              {/* Add more items here */}
+            </ul>
+          </div>
         </div>
       </div>
     </>
