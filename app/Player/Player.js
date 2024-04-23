@@ -400,6 +400,8 @@ const handleFav = () => {
        </div>
        {/* prio === 1 ? filePath : (prio === 2 ? nextFilePath : prevFilePath) */}
       <div className={styles.controls}>
+      {console.log("filePath  ====================================== " + filePath  )}
+      {/* <audio src="http://localhost:8080/music/${filepath}"  ref={audioRef}  ></audio> */}
       <audio src={prio === 1 ? filePath : (prio === 2 ? nextFilePath : prevFilePath) } ref={audioRef} ></audio>
             <div className="btn">
             <button

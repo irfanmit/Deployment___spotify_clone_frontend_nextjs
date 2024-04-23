@@ -46,7 +46,7 @@ const [token, setToken] = useState('');
       .then((response) => {
         console.log("response" + response)
         if (!response.ok) {
-          
+          etServerStatus
           setServerConnectionError(
             setServerStatusOnline(false)
           );
@@ -174,6 +174,7 @@ fetch('http://localhost:8080/graphql', {
         }else{
         console.log("similar songs data "  +resData)
         setPrio(1);
+        console.log("FILE PATH = 23-2 ====  " + resData.data.musicPlayer.filePath);
         setFilePath(resData.data.musicPlayer.filePath)
         setArtist(resData.data.musicPlayer.artist)
         setTitle(resData.data.musicPlayer.title)
